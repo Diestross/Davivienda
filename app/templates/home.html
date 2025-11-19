@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Mi Gestor de Notas{% endblock %}
+
+{% block content %}
+<div class="row align-items-center justify-content-center" style="min-height: calc(100vh - 80px);">
+    <div class="col-lg-6 text-center">
+        <h1 class="mb-4" style="color: var(--primary-color); font-size: 3rem;">
+            📝 Mi Gestor de Notas
+        </h1>
+        <p class="lead mb-4 text-muted">
+            Una aplicación simple y poderosa para administrar tus notas con Markdown integrado.
+        </p>
+        <div class="d-flex gap-3 justify-content-center">
+            <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg px-4">
+                Iniciar Sesión
+            </a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-success btn-lg px-4">
+                Crear Cuenta
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

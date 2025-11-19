@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}{{ note.title }} - Mi Gestor de Notas{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-light.min.css">
+<style>
+    .markdown-content {
+        line-height: 1.6;
+        color: #333;
+    }
+    .markdown-content h1, .markdown-content h2, .markdown-content h3 {
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--primary-color);
+    }
+    .markdown-content pre {
+        background-color: #f5f5f5;
+        border-radius: 8px;
+        padding: 1rem;
+        overflow-x: auto;
+    }
+    .markdown-content code {
+        background-color: #f5f5f5;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+    }
+    .markdown-content blockquote {
+        border-left: 4px solid var(--primary-color);
+        padding-left: 1rem;
+        margin-left: 0;
+        color: #666;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="d-flex justify-content-between align-items-start mb-4">
+            <div>
+                <h1 class="mb-2" style="color: var(--primary-color);">{{ note.title }}</h1>
+                <p class="text-muted small">
+                    Creada: {{ note.created_at.strftime('%d/%m/%Y %H:%M') }} | 
+                    Actualizada: {{ note.updated_at.strftime('%d/%m/%Y %H:%M') }}
+                </p>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('notes.edit_note', note_id=note.id) }}" class="btn btn-warning">
+                    Editar
+                </a>
+                <form method="POST" action="{{ url_for('notes.delete_note', note_id=note.id) }}" 
+                      class="d-inline" onsubmit="return confirm('Estás seguro?');">
+                    <button type="submit" class="btn btn-danger">
+                        Eliminar
+                    </button>
+                </form>
+                <a href="{{ url_for('notes.dashboard') }}" class="btn btn-secondary">
+                    Volver
+                </a>
+            </div>
+        </div>
+        
+        <div class="card shadow">
+            <div class="card-body p-4">
+                <div class="markdown-content" id="markdown-output"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>
+    marked.setOptions({
+        breaks: true,
+        gfm: true
+    });
+    
+    const markdown = `{{ note.content | safe }}`;
+    const html = marked.parse(markdown);
+    document.getElementById('markdown-output').innerHTML = html;
+    
+    document.querySelectorAll('pre code').forEach(block => {
+        hljs.highlightElement(block);
+    });
+</script>
+{% endblock %}

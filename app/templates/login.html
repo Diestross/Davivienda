@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión - Administrador de Notas{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-background {
+        background-image: url('/static/davivienda.png');
+        background-size: 40%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+        position: relative;
+        min-height: calc(100vh - 150px);
+    }
+
+    .login-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.15) !important;
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-background d-flex justify-content-center align-items-center">
+    <div class="login-content col-md-5">
+        <div class="card shadow-lg">
+            <div class="card-body p-5">
+                <h2 class="text-center mb-4" style="color: #DC143C; font-weight: 700; font-size: 1.8rem;">Iniciar Sesión
+                </h2>
+
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nombre de Usuario</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                        <label class="form-check-label" for="remember">Recuérdame</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 mb-3">Iniciar Sesión</button>
+                </form>
+
+                <p class="text-center text-muted mb-0">
+                    ¿No tienes cuenta? <a href="{{ url_for('auth.register') }}">Regístrate</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

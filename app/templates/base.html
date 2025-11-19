@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Administrador de Notas{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #DC143C;
+            --secondary-color: #FFA500;
+            --accent-color: #FFD700;
+            --teal-color: #008B8B;
+            --light-bg: #f9fafb;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        nav {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #B22222 100%);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+            padding: 0.5rem 0;
+        }
+
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-brand img {
+            height: 80px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .navbar-logo {
+            height: 80px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-left: 0.5rem;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: white !important;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .dropdown-menu {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e8e9eb 100%);
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .dropdown-item {
+            color: var(--primary-color);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(220, 20, 60, 0.1);
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .container-main {
+            min-height: calc(100vh - 80px);
+            padding: 2rem 0;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #B22222;
+            border-color: #B22222;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(220, 20, 60, 0.3);
+        }
+
+        .btn-success {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background-color: #FF8C00;
+            border-color: #FF8C00;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 165, 0, 0.3);
+        }
+
+        .btn-warning {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #333;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-warning:hover {
+            background-color: #FFC700;
+            border-color: #FFC700;
+            color: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-danger {
+            background-color: #DC143C;
+            border-color: #DC143C;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background-color: #B22222;
+            border-color: #B22222;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(220, 20, 60, 0.3);
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .alert {
+            border-radius: 12px;
+            border: none;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #047857;
+            border-left: 4px solid #10b981;
+        }
+
+        .alert-danger {
+            background-color: rgba(220, 20, 60, 0.15);
+            color: #991b1b;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .alert-info {
+            background-color: rgba(8, 139, 139, 0.15);
+            color: #0d6363;
+            border-left: 4px solid var(--teal-color);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand nav-brand" href="/">
+                <img src="{{ url_for('static', filename='Davivienda_Logo.png') }}" alt="Davivienda" class="navbar-logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('notes.dashboard') }}">Mis Notas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('notes.create_note') }}">+ Nueva Nota</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ current_user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Cerrar Sesión</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.register') }}">Registrarse</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-main">
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show"
+                role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

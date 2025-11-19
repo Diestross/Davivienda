@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Nota - {{ note.title }}{% endblock %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.css">
+<style>
+    .CodeMirror {
+        height: auto !important;
+        min-height: 400px;
+    }
+
+    .editor-preview {
+        min-height: 400px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <h1 class="mb-4" style="color: var(--primary-color);">Editar Nota</h1>
+
+        <div class="card shadow">
+            <div class="card-body p-4">
+
+                <form method="POST" id="noteForm" enctype="application/x-www-form-urlencoded">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Título de la Nota</label>
+                        <input type="text" class="form-control" id="title" name="title" value="{{ note.title }}"
+                            required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="content" class="form-label">Contenido (Markdown)</label>
+                        <textarea id="content" name="content" required>{{ note.content }}</textarea>
+                    </div>
+
+                    <p class="text-muted small mb-3">
+                        Creada: {{ note.created_at.strftime('%d/%m/%Y %H:%M') }} |
+                        Última actualización: {{ note.updated_at.strftime('%d/%m/%Y %H:%M') }}
+                    </p>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            💾 Guardar Cambios
+                        </button>
+                        <a href="{{ url_for('notes.view_note', note_id=note.id) }}" class="btn btn-secondary btn-lg">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.js"></script>
+<script>
+    const easyMDE = new EasyMDE({
+        element: document.getElementById('content'),
+        spellChecker: false,
+        autoDownloadFontAwesome: true,
+        toolbar: [
+            'bold', 'italic', 'heading', '|',
+            'quote', 'unordered-list', 'ordered-list', '|',
+            'link', 'image', '|',
+            'preview', 'side-by-side', 'fullscreen', '|',
+            'guide'
+        ],
+        forceSync: true
+    });
+
+    document.getElementById('noteForm').addEventListener('submit', function (e) {
+        const content = easyMDE.value();
+        const title = document.getElementById('title').value.trim();
+
+        console.log("[v0] Form submission - Title:", title);
+        console.log("[v0] Form submission - Content length:", content.length);
+
+        if (!title) {
+            e.preventDefault();
+            alert('El título es obligatorio.');
+            return false;
+        }
+
+        if (!content.trim()) {
+            e.preventDefault();
+            alert('El contenido es obligatorio.');
+            return false;
+        }
+
+
+    });
+</script>
+{% endblock %}
